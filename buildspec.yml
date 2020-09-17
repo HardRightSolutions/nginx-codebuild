@@ -31,6 +31,10 @@ phases:
       - echo Build stage successfully completed on `date`
       - echo Pushing the Docker image...
       - docker push $IMAGE_URI
-      - printf '[{"name":"nginx","imageUri":"%s"}]' "$IMAGE_URI" > images.json
+      # printf '[{"name":"nginx","imageUri":"%s"}]' "$IMAGE_URI" > images.json
+      - printf '[{"name":"nginx","imageUri":"IMAGE_URI"}]' > imagedefinitions.json
+      - sed -i -e "s|CONTAINER_NAME|$ContainerName|g" imagedefinitions.json
+      - sed -i -e "s|IMAGE_URI|$ImageURI|g" imagedefinitions.json
+      - cat imagedefinitions.json
 artifacts:
-  files: images.json
+  files: imagedefinitions.json
